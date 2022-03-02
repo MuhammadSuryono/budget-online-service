@@ -7,4 +7,9 @@ class UserModel extends CI_Model
 	{
 		return $this->db->get_where($this->table, array('id_user' => $username, 'password' => $password))->row_array();
 	}
+
+	public function read_user($idUser)
+	{
+		return $this->db->get_where($this->table, array('id_user' => $idUser, 'aktif' => 'Y'))->row_array();
+	}
 }

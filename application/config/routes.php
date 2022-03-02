@@ -54,3 +54,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['auth/login'] = 'auth/AuthController';
+
+$route['digital/project/(:any)']['get'] = 'digital/ProjectController/$1';
+
+$route['budget/add']['post'] = 'budget/PengajuanController';
