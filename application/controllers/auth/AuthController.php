@@ -5,6 +5,11 @@ class AuthController extends MY_Controller
 	protected $roleBpuUser = [];
 	public function index_post()
 	{
+		$this->validate([
+			'username' => 'required|string',
+			'password' => 'required|min:5'
+		]);
+
 		$this->load->model('UserModel');
 		$username = $this->requestInput->username;
 		$password = $this->requestInput->password;
@@ -13,6 +18,7 @@ class AuthController extends MY_Controller
 		if (isset($check)) {
 			$this->get_role_bpu_user($check);
 			$check['role'] = $this->roleBpuUser;
+			$check['token'] = $this->generate_token($check);
 
 			$this->response_api(200, true, 'Login success', $check);
 		} else{
