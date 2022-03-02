@@ -21,7 +21,10 @@ class Welcome extends MY_Controller {
 
 	public function index_get()
 	{
-		$data = $this->db->get("bpu", 10, 0)->result();
-		$this->response_api(REST_Controller::HTTP_OK, true, 'Data BPU', $data);
+		$data = [
+			"APP_NAME" => "Budget Online Service",
+			"APP_VERSION" => "1.0.0",
+		];
+		$this->response_api(REST_Controller::HTTP_OK, true, 'Success retrieve data', $data);
 	}
 }
