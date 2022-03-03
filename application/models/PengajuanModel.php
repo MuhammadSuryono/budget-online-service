@@ -19,4 +19,9 @@ class PengajuanModel extends CI_Model
 	{
 		return $this->db->get_where($this->table, ["type" => $type])->order_by('noid', 'desc')->row();
 	}
+
+	public function get_pengajuan(array $condition)
+	{
+		return $this->db->get_where($this->table, $condition)->result();
+	}
 }

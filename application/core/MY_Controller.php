@@ -23,6 +23,7 @@ class MY_Controller extends REST_Controller
 	public function __construct($config = 'rest')
 	{
 		parent::__construct($config);
+
 		if (!in_array(uri_string(), $this->exceptUri)) {
 			$this->middleware();
 		}

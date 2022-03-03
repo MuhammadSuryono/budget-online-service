@@ -13,6 +13,28 @@ class PengajuanController extends MY_Controller
 		$this->register_methode();
 	}
 
+	public function index_get($noid)
+	{
+		$this->load->model('PengajuanModel');
+		$this->load->model('BpuModel');
+
+		$data = $this->PengajuanModel->read($noid);
+		$totalNominalBpu = $this->BpuModel->sum_bpu('jumlah', ["waktu" => $data->waktu]);
+		$totalRtp = $this->BpuModel->sum_bpu('jumlah', ["waktu" => $data->waktu, "persetujuan" => "Disetujui (Direksi)", "status" => "Belum Di Bayar"]);
+		$totalUangKembali = $this->BpuModel->sum_bpu('uangkembali', ["waktu" => $data->waktu]);
+
+		$data->total_nominal_bpu = (int)$totalNominalBpu->jumlah;
+		$data->total_rtp_bpu = (int)$totalRtp->jumlah;
+		$data->total_uang_kembali = (int)$totalUangKembali->uangkembali;
+
+		$data->total_biaya_uang_muka = $data->total_nominal_bpu - $data->total_rtp_bpu;
+		$data->sisa_budget = (int)$data->totalbudget - $data->total_biaya_uang_muka;
+		$data->total_pembayaran = (int)$data->totalbudget - $data->sisa_budget;
+		$data->persentase_pembayaran = ($data->total_pembayaran / $data->totalbudget) * 100;
+
+		$this->response_api(200, true, "Success retrieve data", $data);
+	}
+
 	public function index_post()
 	{
 		$this->validate([
