@@ -30,7 +30,7 @@ class PengajuanController extends MY_Controller
 		$data->total_biaya_uang_muka = $data->total_nominal_bpu - $data->total_rtp_bpu;
 		$data->sisa_budget = (int)$data->totalbudget - $data->total_biaya_uang_muka;
 		$data->total_pembayaran = (int)$data->totalbudget - $data->sisa_budget;
-		$data->persentase_pembayaran = ($data->total_pembayaran / $data->totalbudget) * 100;
+		$data->persentase_pembayaran = ceil(($data->total_pembayaran / $data->totalbudget) * 100);
 
 		$this->response_api(200, true, "Success retrieve data", $data);
 	}
