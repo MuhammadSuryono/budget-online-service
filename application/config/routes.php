@@ -62,3 +62,5 @@ $route['budget/pengajuan/(:any)']['get'] = 'budget/PengajuanController/$1';
 $route['budget/pengajuan/(:any)/items']['get'] = 'budget/PengajuanItemController/$1';
 $route['budget/project-type']['get'] = 'budget/OptionTypeProject';
 $route['budget/list/pengajuan']['get'] = 'pengajuan/ListController';
+$route['budget/item/(:any)']['get'] = 'budget/ItemController/$1';
+$route['budget/item/(:any)/bpu']['get'] = 'budget/BpuItemController/$1';
