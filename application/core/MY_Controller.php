@@ -15,7 +15,7 @@ class MY_Controller extends REST_Controller
 	public $arrStatusB2 = ['UM', 'Honor Eksternal'];
 	public $arrPenerimaB2 = ['Responden', 'Interviewer'];
 
-	protected $exceptUri = ['auth/login'];
+	protected $exceptUri = ['auth/login', 'api/bpu/create'];
 	protected $token;
 
 	protected $dataToken;
@@ -111,6 +111,37 @@ class MY_Controller extends REST_Controller
 	public function auth_user()
 	{
 		return $this->dataToken;
+	}
+
+	public function HTTPPost($url, array $params, $type = "form") {
+		$query = http_build_query($params);
+		if ($type == "json") {
+			$query = json_encode($params);
+		}
+
+		$ch    = curl_init();
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+		$response = curl_exec($ch);
+		curl_close($ch);
+		return $response;
+	}
+
+	public function get_budget_api_key()
+	{
+		return isset($this->input->request_headers()['Budget-Api-Key']) ? $this->input->request_headers()['Budget-Api-Key'] : null;
+	}
+
+	public function invalid_api_key()
+	{
+		$budgetApiKey = $this->get_budget_api_key();
+		$application = $this->db->get_where('application', ['api_key' => $budgetApiKey])->row();
+		return $application == null;
 	}
 
 

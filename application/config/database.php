@@ -111,3 +111,70 @@ $db['digitalisasimarketing'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+$db['db_mritransfer'] = array(
+	'dsn'	=> '',
+	'hostname' => '192.168.8.2',
+	'username' => 'adam',
+	'password' => 'Ad@mMR!db213',
+
+	'database' => 'mritransferapi',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['db_develop'] = array(
+	'dsn'	=> '',
+	'hostname' => '192.168.8.2',
+	'username' => 'adam',
+	'password' => 'Ad@mMR!db213',
+	'database' => 'develop',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['db_bridge'] = array(
+	'dsn'	=> '',
+	'hostname' => '192.168.8.2',
+	'username' => 'adam',
+	'password' => 'Ad@mMR!db213',
+	'database' => 'bridgetransfer',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);

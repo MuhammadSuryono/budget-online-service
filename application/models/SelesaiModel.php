@@ -20,4 +20,9 @@ class SelesaiModel extends CI_Model
 		return $this->db->get_where($this->table, array('waktu' => $waktu))->result();
 	}
 
+	public function read_other_condition(array $condition)
+	{
+		return $this->db->get_where($this->table, $condition)->row();
+	}
+
 }

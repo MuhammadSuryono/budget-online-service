@@ -17,4 +17,9 @@ class BpuModel extends CI_Model
 		return $this->db->get_where($this->table,$condition)->result();
 	}
 
+	public function max_term(array $condition)
+	{
+		return $this->db->select("MAX(term) as max_term")->get_where($this->table, $condition)->row();
+	}
+
 }
