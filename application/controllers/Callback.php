@@ -24,7 +24,7 @@ class Callback extends MY_Controller
 			$this->get_data_bpu($this->dataTransfer->noid_bpu);
 			$this->update_bpu();
 			$this->send_callback();
-			$this->send_notification_whatsapp();
+//			$this->send_notification_whatsapp();
 
 			$this->response_api(200, true, "Success update data BPU");
 		} else {
@@ -82,7 +82,7 @@ class Callback extends MY_Controller
 			"jadwal_transfer" => $this->dataTransfer->jadwal_transfer,
 			"project" => $this->dataTransfer->nm_project,
 			"biaya_transfer" => $this->dataTransfer->biaya_trf,
-			"term" => $this->dataStkb->term
+			"term" => $this->dataBpu->term
 		];
 
 		$messageTransfer = $wa->message_success_transfer($dataNotifikasi);
@@ -127,7 +127,9 @@ class Callback extends MY_Controller
 		$apiKey = $this->dataBpu->api_key;
 		$application = $this->db->get_where('application', ['api_key' => $apiKey])->row();
 		$url = $application->url_callback;
+		$this->dataBpu->tanggalbayar = $this->dataTransfer->jadwal_transfer;
 
-		$this->HTTPPost($url, $this->dataBpu, "json");
+		$req = $this->HTTPPost($url, ["is_success" => true, "message" => "", "data" => $this->dataBpu], "json");
+		print_r($req);
 	}
 }

@@ -15,7 +15,7 @@ class MY_Controller extends REST_Controller
 	public $arrStatusB2 = ['UM', 'Honor Eksternal'];
 	public $arrPenerimaB2 = ['Responden', 'Interviewer'];
 
-	protected $exceptUri = ['auth/login', 'api/bpu/create'];
+	protected $exceptUri = ['auth/login', 'api/bpu/create', 'api/transfer/callback'];
 	protected $token;
 
 	protected $dataToken;
