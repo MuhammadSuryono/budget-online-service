@@ -2,7 +2,7 @@
 
 class Whatsapp
 {
-	private $host = "http://192.168.10.240:8080/api/v1/whatsapp";
+	private $host = "http://app.mkp-operation.com:8080/api/v1/whatsapp";
 
 	public function __construct()
 	{
