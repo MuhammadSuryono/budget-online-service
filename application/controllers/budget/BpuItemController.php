@@ -1,5 +1,7 @@
 <?php
 
+
+include_once (dirname(__FILE__) . "../Whatsapp.php");
 class BpuItemController extends MY_Controller
 {
 	public function __construct($config = 'rest')
@@ -60,8 +62,15 @@ class BpuItemController extends MY_Controller
 			return;
 		}
 
+		// BPU untuk honor dibuat 1 bpu multiple receiver
+		$dateNow = date("Y-m-d");
 		$term = $this->BpuModel->max_term(["waktu" => $dataPengajuan[0]->waktu, "no" => $dataItem->no]);
-		$term = $term->max_term + 1;
+		$lastBpuToday = $this->get_last_bpu_by_day($dateNow);
+		if ($lastBpuToday == null) {
+			$term = $term->max_term + 1;
+		} else {
+			$term = $term->max_term;
+		}
 
 		$payloadBpu = $this->set_payload_bpu($dataItem, $term, $metodePembayaran);
 		$this->insert_bpu($payloadBpu);
@@ -71,6 +80,30 @@ class BpuItemController extends MY_Controller
 			$noIdBpu = $this->getLastDataNoidBpu();
 			$dataMriPal = $this->push_to_mri_transfer($bank, $dataPengajuan[0], $noIdBpu, $sourceAccountBank);
 		}
+
+		$wa = new Whatsapp();
+		$dataNotifikasi = [
+			"penerima" => $payloadBpu["namapenerima"],
+			"msisdn" => $payloadBpu["phone_number"],
+			"jenis_pembayaran" => $payloadBpu['statusbpu'],
+			"pemilik_rekening" => $payloadBpu["bank_account_name"],
+			"nomor_rekening" => $payloadBpu["norek"],
+			"bank" => $bank->namabank,
+			"jumlah" => $this->requestInput->jumlah,
+			"jadwal_transfer" => $this->requestInput->tanggal_bayar,
+			"project" => $this->requestInput->nama_project,
+			"term" => $payloadBpu["term"],
+			"metode_pembayaran" => $payloadBpu["metode_pembayaran"],
+			"keterangan_pembayaran" => $payloadBpu["ket_pembayaran"],
+			"biaya_transfer" => 0,
+		];
+
+		if ($metodePembayaran == "MRI PAL") {
+			$dataNotifikasi["biaya_transfer"] = $this->setBiayaTransfer($this->requestInput->kode_bank);
+		}
+
+		$messageTransfer = $wa->message_transfer($dataNotifikasi);
+		$wa->send_notification($dataNotifikasi['msisdn'], $messageTransfer);
 
 		$this->response_api(200, true, "Success create BPU", ["data_bpu" => $payloadBpu, "data_transfer" => $dataMriPal]);
 	}
@@ -123,13 +156,19 @@ class BpuItemController extends MY_Controller
 			"ket_pembayaran" => $this->requestInput->ket_pembayaran,
 			"id_rtp_application" => $this->requestInput->num_honor,
 			"phone_number" => $this->requestInput->nomor_hp,
-			"api_key" => $this->get_budget_api_key()
+			"api_key" => $this->get_budget_api_key(),
+			"created_date" => date("Y-m-d"),
 		];
 	}
 
 	private function insert_bpu($data)
 	{
 		$this->db->insert('bpu', $data);
+	}
+
+	private function get_last_bpu_by_day($date)
+	{
+		return $this->db->get_where("bpu", ["created_date" => $date])->row();
 	}
 
 	private function getLastDataNoidBpu()
@@ -157,7 +196,7 @@ class BpuItemController extends MY_Controller
 			"bank" => $bank->namabank,
 			"kode_bank" => $this->requestInput->kode_bank,
 			"berita_transfer" => $this->requestInput->ket_pembayaran,
-			"jumlah" => $this->requestInput->jumlah,
+			"jumlah" => $this->requestInput->jumlah - $biayaTrf,
 			"ket_transfer" => "Antri",
 			"nm_pembuat" => $this->requestInput->pembayar,
 			"nm_otorisasi" => $this->requestInput->pembayar,
