@@ -34,15 +34,17 @@ class Callback extends MY_Controller
 
 	private function update_bpu()
 	{
+		$voucherNumber = $this->generate_voucher_number($this->dataTransfer->kode_bank);
 		$value = [
 			"tglcair" => $this->dataTransfer->jadwal_transfer,
 			"status" => 'Telah Di Bayar',
 			"jumlahbayar" => $this->dataTransfer->jumlah,
-			"novoucher" => "",
+			"novoucher" => $voucherNumber,
 			"tanggalbayar" => $this->dataTransfer->jadwal_transfer,
 		];
 
 		$this->db->where("noid", $this->dataTransfer->noid_bpu)->update("bpu", $value);
+		$this->db->insert('tb_vouchers', ["voucher_code" => $voucherNumber, "type_payment" => "Honor"]);
 	}
 
 	private function set_data_input_json()

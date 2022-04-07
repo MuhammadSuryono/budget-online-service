@@ -26,10 +26,10 @@ class BpuItemController extends MY_Controller
 			return;
 		}
 
-//		if ($this->invalid_api_key()) {
-//			$this->response_api(401, false, 'Unauthorized, Budget Api Key Invalid');
-//			return;
-//		}
+		if ($this->invalid_api_key()) {
+			$this->response_api(401, false, 'Unauthorized, Budget Api Key Invalid');
+			return;
+		}
 
 		$this->load->model('PengajuanModel');
 		$this->load->model('SelesaiModel');
