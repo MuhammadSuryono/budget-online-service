@@ -49,6 +49,11 @@ class BpuItemController extends MY_Controller
 			return;
 		}
 
+		if ($this->is_duplicate_input()) {
+			$this->response_api(400, false, "Duplicate input");
+			return;
+		}
+
 		$dataPengajuan = $this->PengajuanModel->get_pengajuan(["kodeproject" => $this->requestInput->kode_project]);
 		if (! isset($dataPengajuan[0])) {
 			$this->response_api(400, false, "Pengajuan tidak ditemukan");
@@ -105,6 +110,14 @@ class BpuItemController extends MY_Controller
 		$wa->send_notification($dataNotifikasi['msisdn'], $messageTransfer);
 
 		$this->response_api(200, true, "Success create BPU", ["data_bpu" => $payloadBpu, "data_transfer" => $dataMriPal]);
+	}
+
+	private function is_duplicate_input()
+	{
+		$data = $this->db->get_where("bpu", ["ket_pembayaran" => $this->requestInput->ket_pembayaran,
+			"id_rtp_application" => $this->requestInput->num_honor])->row();
+
+		return $data != null;
 	}
 
 	private function source_account_bank()
