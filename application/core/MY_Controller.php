@@ -15,7 +15,7 @@ class MY_Controller extends REST_Controller
 	public $arrStatusB2 = ['UM', 'Honor Eksternal'];
 	public $arrPenerimaB2 = ['Responden', 'Interviewer'];
 
-	protected $exceptUri = ['auth/login', 'api/bpu/create', 'api/transfer/callback'];
+	protected $exceptUri = ['auth/login', 'api/bpu/create', 'api/transfer/callback', 'api/pengajuan/read'];
 	protected $token;
 
 	protected $dataToken;
@@ -41,11 +41,12 @@ class MY_Controller extends REST_Controller
 		$this->response($response, $code);
 	}
 
-	public function print_pretty($data)
+	public function print_pretty(...$data)
 	{
 		echo "<pre>";
 		print_r($data);
 		echo "</pre>";
+		exit();
 	}
 
 	public function set_request()
@@ -144,5 +145,9 @@ class MY_Controller extends REST_Controller
 		return $application == null;
 	}
 
+	public function request()
+	{
+		return $this->input;
+	}
 
 }

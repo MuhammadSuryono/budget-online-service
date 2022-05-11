@@ -9,6 +9,7 @@ class ListController extends MY_Controller
 
 	public function index_get()
 	{
+		$this->print_pretty($this->get());
 		$this->load->model('PengajuanModel');
 		$datas = $this->get_data();
 		$this->response_api(200, true, "Success retrieve data", $datas);

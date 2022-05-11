@@ -67,3 +67,4 @@ $route['budget/item/(:any)/bpu']['get'] = 'budget/BpuItemController/$1';
 
 $route['api/bpu/create'] = 'budget/BpuItemController';
 $route['api/transfer/callback'] = 'Callback';
+$route['api/pengajuan/read'] = 'pengajuan/ReadNameController';
